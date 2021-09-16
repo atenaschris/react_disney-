@@ -32,7 +32,6 @@ margin-bottom:10vw;
 width:100%;
 position:relative;
 min-height:100vh;
-box-sizing:border-box;
 display:flex;
 justify-content: center;
 align-items: center;
@@ -60,9 +59,8 @@ const CTA = styled.div`
 
     margin : 0 auto 2vw auto ;   
     max-width:650px;
-    flex-wrap:wrap;
     display:flex;
-    flex-direction:column;
+    flex-flow: column wrap;
     justify-content:center;
     align-items:center;
     text-align:center;
