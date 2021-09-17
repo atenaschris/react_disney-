@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
-import { signInWithPopup,onAuthStateChanged } from "firebase/auth";
+import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectUserName,
   selectUserEmail,
   selectUserPhoto,
 } from "../features/user/userSlice";
-import { setUserLoginDetails } from "../features/user/userSlice";
+import {
+  setUserLoginDetails,
+  setSignOutState,
+} from "../features/user/userSlice";
 
 import { useHistory } from "react-router";
 
@@ -20,13 +23,20 @@ const Header = () => {
   const userPhoto = useSelector(selectUserPhoto);
   const handleAuth = async () => {
     try {
-      const response = await signInWithPopup(auth, provider);
+      if (!userName) {
+        const response = await signInWithPopup(auth, provider);
 
-      console.log(response);
+        console.log(response);
 
-      const user = response.user;
+        const user = response.user;
 
-      helperSetUserFunction(user);
+        helperSetUserFunction(user);
+      } else if (userName) {
+        await auth.signOut();
+
+        dispatch(setSignOutState());
+        history.push("/");
+      }
     } catch (err) {
       alert(err.message);
     }
@@ -39,7 +49,7 @@ const Header = () => {
       if (user) {
         helperSetUserFunction(user);
         history.push("/home");
-      } 
+      }
     });
   }, [userName]);
 
@@ -87,7 +97,12 @@ const Header = () => {
               <span>SERIES</span>
             </a>
           </NavMenu>
-          <ProfilePhoto src={userPhoto} alt={userName} />
+          <Signout>
+            <ProfilePhoto src={userPhoto} alt={userName} />
+            <DropDown>
+              <span onClick={handleAuth}>Sign out</span>
+            </DropDown>
+          </Signout>
         </>
       )}
     </Nav>
@@ -184,6 +199,7 @@ const Login = styled.a`
   text-transform: uppercase;
   border-radius: 4px;
   transition: all 0.4s linear;
+  cursor: pointer;
 
   &:hover {
     background-color: #f9f9f9;
@@ -192,10 +208,45 @@ const Login = styled.a`
 `;
 
 const ProfilePhoto = styled.img`
-  min-width: 50px;
+  height: 100%;
+`;
+
+const DropDown = styled.div`
+  position: absolute;
+  top: 0px;
+  right: 0;
+  background: rgb(19, 19, 19);
+  border: 1px solid rgba(151, 151, 151, 0.34);
+  border-radius: 4px;
+  box-shadow: rgb(0 0 0 / 50%) 0px 0px 18px 0px;
+  padding: 10px;
+  font-size: 14px;
+  letter-spacing: 3px;
+  width: 100px;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.4s ease-in 0.1s;
+`;
+
+const Signout = styled.div`
+  position: relative;
+  height: 50px;
   width: 50px;
-  border-radius: 50%;
-  border: 3px solid #f9f9f9;
+  cursor: pointer;
+
+  ${ProfilePhoto} {
+    border-radius: 50%;
+    width: 100%;
+  }
+
+  &:hover {
+    ${DropDown} {
+      opacity: 1;
+      top: 48px;
+      transform: scale(1);
+      transform-origin: right center;
+    }
+  }
 `;
 
 export default Header;
