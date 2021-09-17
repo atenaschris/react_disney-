@@ -1,39 +1,85 @@
 import React from "react";
 import styled from "styled-components";
 
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectUserName,
+  selectUserEmail,
+  selectUserPhoto,
+} from "../features/user/userSlice";
+import { setUserLoginDetails } from "../features/user/userSlice";
+
+import { useHistory } from "react-router";
+
 const Header = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const userName = useSelector(selectUserName);
+  const userEmail = useSelector(selectUserEmail);
+  const userPhoto = useSelector(selectUserPhoto);
+  const handleAuth = async () => {
+    try {
+      const response = await signInWithPopup(auth, provider);
+
+      const user = response.user;
+
+      helperSetUserFunction(user);
+
+      console.log(response);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const helperSetUserFunction = (user) => {
+    dispatch(
+      setUserLoginDetails({
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+      })
+    );
+  };
   return (
     <Nav>
       <Logo>
         <img src="/images/logo.svg" alt="Disney+" />
       </Logo>
-      <NavMenu>
-        <a href="/home">
-          <img src="/images/home-icon.svg" alt="HOME" />
-          <span>HOME</span>
-        </a>
-        <a href="/home">
-          <img src="/images/search-icon.svg" alt="HOME" />
-          <span>SEARCH</span>
-        </a>
-        <a href="/home">
-          <img src="/images/watchlist-icon.svg" alt="HOME" />
-          <span>WATCHLIST</span>
-        </a>
-        <a href="/home">
-          <img src="/images/original-icon.svg" alt="HOME" />
-          <span>ORIGINALS</span>
-        </a>
-        <a href="/home">
-          <img src="/images/movie-icon.svg" alt="HOME" />
-          <span>MOVIES</span>
-        </a>
-        <a href="/home">
-          <img src="/images/series-icon.svg" alt="HOME" />
-          <span>SERIES</span>
-        </a>
-      </NavMenu>
-      <Login>Login</Login>
+      {!userName ? (
+        <Login onClick={handleAuth}>Login</Login>
+      ) : (
+        <>
+          <NavMenu>
+            <a href="/home">
+              <img src="/images/home-icon.svg" alt="HOME" />
+              <span>HOME</span>
+            </a>
+            <a href="/home">
+              <img src="/images/search-icon.svg" alt="HOME" />
+              <span>SEARCH</span>
+            </a>
+            <a href="/home">
+              <img src="/images/watchlist-icon.svg" alt="HOME" />
+              <span>WATCHLIST</span>
+            </a>
+            <a href="/home">
+              <img src="/images/original-icon.svg" alt="HOME" />
+              <span>ORIGINALS</span>
+            </a>
+            <a href="/home">
+              <img src="/images/movie-icon.svg" alt="HOME" />
+              <span>MOVIES</span>
+            </a>
+            <a href="/home">
+              <img src="/images/series-icon.svg" alt="HOME" />
+              <span>SERIES</span>
+            </a>
+          </NavMenu>
+          <ProfilePhoto src={userPhoto} alt={userName} />
+        </>
+      )}
     </Nav>
   );
 };
@@ -53,6 +99,7 @@ const Nav = styled.nav`
 
 const Logo = styled.a`
   width: 80px;
+  min-width: 80px;
   max-height: 70px;
   font-size: 0;
   img {
@@ -99,21 +146,21 @@ const NavMenu = styled.div`
         bottom: -6px;
         left: 0px;
         opacity: 0;
-        transform-origin: left center;
+        transform-origin: center;
         transform: scaleX(0);
-        transition: all 250ms cubic-bezier(0.19, 1, 0.22, 1);
+        transition: all 400ms cubic-bezier(0.19, 1, 0.22, 1) 0.2s;
       }
     }
 
     &:hover {
       span:before {
         transform: scaleX(1);
-        opacity: 1 !important;
+        opacity: 1;
       }
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 906px) {
     display: none;
   }
 `;
@@ -132,6 +179,13 @@ const Login = styled.a`
     background-color: #f9f9f9;
     color: #000;
   }
+`;
+
+const ProfilePhoto = styled.img`
+min-width: 50px;
+width: 50px;
+border-radius: 50%;
+border:3px solid #f9f9f9;
 `;
 
 export default Header;
