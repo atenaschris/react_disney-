@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-
 import { auth, provider } from "../firebase";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup,onAuthStateChanged } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectUserName,
@@ -23,15 +22,26 @@ const Header = () => {
     try {
       const response = await signInWithPopup(auth, provider);
 
+      console.log(response);
+
       const user = response.user;
 
       helperSetUserFunction(user);
-
-      console.log(response);
     } catch (err) {
       alert(err.message);
     }
   };
+
+  useEffect(() => {
+    console.log("running");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        helperSetUserFunction(user);
+        history.push("/home");
+      } 
+    });
+  }, [userName]);
 
   const helperSetUserFunction = (user) => {
     dispatch(
@@ -182,10 +192,10 @@ const Login = styled.a`
 `;
 
 const ProfilePhoto = styled.img`
-min-width: 50px;
-width: 50px;
-border-radius: 50%;
-border:3px solid #f9f9f9;
+  min-width: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 3px solid #f9f9f9;
 `;
 
 export default Header;
