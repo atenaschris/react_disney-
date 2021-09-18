@@ -47,6 +47,7 @@ const Header = () => {
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log('user is logged in!!!')
         helperSetUserFunction(user);
         history.push("/home");
       }

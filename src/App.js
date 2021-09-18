@@ -3,8 +3,11 @@ import Login from "./components/Login";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./components/Home";
+import { useSelector } from "react-redux";
+import { selectUserName } from "./features/user/userSlice";
 
 function App() {
+  const userName = useSelector(selectUserName);
   return (
     <div className="App">
       <Router>
@@ -14,7 +17,7 @@ function App() {
             <Login />
           </Route>
           <Route path="/home">
-            <Home />
+            {!userName ? <Login /> : <Home />}
           </Route>
         </Switch>
       </Router>

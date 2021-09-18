@@ -26,7 +26,6 @@ const db = getFirestore(firebaseApp);
 
 const auth = getAuth();
 
-
 const provider = new GoogleAuthProvider();
 
 const storage = getStorage();

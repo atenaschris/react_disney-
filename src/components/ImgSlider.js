@@ -28,7 +28,7 @@ const ImgSlider = (props) => {
           <h3>3</h3>
         </div>
       </Slider>
-    </div>
+    
   );
 };
 
