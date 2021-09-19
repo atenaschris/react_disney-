@@ -174,7 +174,7 @@ const NavMenu = styled.div`
         bottom: -6px;
         left: 0px;
         opacity: 0;
-        transform-origin: center;
+        transform-origin: left center;
         transform: scaleX(0);
         transition: all 400ms cubic-bezier(0.19, 1, 0.22, 1) 0.2s;
       }
