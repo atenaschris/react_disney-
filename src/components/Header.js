@@ -15,6 +15,10 @@ import {
 
 import { useHistory } from "react-router";
 
+let loggedInManually;
+
+console.log(loggedInManually);
+
 const Header = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -30,7 +34,7 @@ const Header = () => {
 
         const user = response.user;
 
-        helperSetUserFunction(user);
+        loggedInManually = helperSetUserFunction(user);
       } else if (userName) {
         await auth.signOut();
 
@@ -46,11 +50,10 @@ const Header = () => {
     console.log("running");
 
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log('user is logged in!!!')
-        helperSetUserFunction(user);
-        history.push("/home");
-      }
+      if (user && !loggedInManually)
+        loggedInManually = helperSetUserFunction(user);
+
+      history.push("/home");
     });
   }, [userName]);
 
@@ -127,7 +130,6 @@ const Logo = styled.a`
   width: 80px;
   min-width: 80px;
   max-height: 70px;
-  font-size: 0;
   img {
     display: inline-block;
     width: 100%;
