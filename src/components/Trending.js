@@ -2,31 +2,24 @@ import styled from "styled-components";
 
 import { Link } from "react-router-dom";
 
+import { useSelector } from "react-redux";
+
+import { selectTrending } from "../features/movie/movieSlice";
+
 const Trending = () => {
+  const trendingMovies = useSelector(selectTrending);
   return (
     <Container>
       <h4>Trending</h4>
       <Content>
-        <Wrap>
-          <Link to="">
-            <img src="/images/vieWers-disney.png" alt="" />
-          </Link>
-        </Wrap>
-        <Wrap>
-          <Link to="">
-            <img src="/images/vieWers-disney.png" alt="" />
-          </Link>
-        </Wrap>
-        <Wrap>
-          <Link to="">
-            <img src="/images/vieWers-disney.png" alt="" />
-          </Link>
-        </Wrap>
-        <Wrap>
-          <Link to="">
-            <img src="/images/vieWers-disney.png" alt="" />
-          </Link>
-        </Wrap>
+        {trendingMovies &&
+          trendingMovies.map((movie,i) => (
+            <Wrap key={i}>
+              <Link to={'/detail/' + movie.id} >
+                <img src={movie.cardImg} alt={movie.title} />
+              </Link>
+            </Wrap>
+          ))}
       </Content>
     </Container>
   );
@@ -47,7 +40,7 @@ const Content = styled.div`
 `;
 
 const Wrap = styled.div`
- padding-top: 56.25%;
+  padding-top: 56.25%;
   border-radius: 10px;
   box-shadow: rgb(0 0 0 / 69%) 0px 26px 30px -10px,
     rgb(0 0 0 / 73%) 0px 16px 10px -10px;
@@ -55,30 +48,31 @@ const Wrap = styled.div`
   overflow: hidden;
   position: relative;
   transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border: 3px solid rgba(249,249,249,0.1);
+  border: 3px solid rgba(249, 249, 249, 0.1);
 
-  img{
-      position: absolute;
-      inset: 0px;
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-      display: block;
-      opacity: 1;
-      z-index: 1;
-      transition: transform 250ms ease;
-      transform:scale(1);
+  img {
+    position: absolute;
+    inset: 0px;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 1;
+    z-index: 1;
+    transition: transform 250ms ease;
+    transform: scale(1);
   }
 
-  &:hover{
-      box-shadow: rgb(0 0 0 / 80%) 0px 40px 58px -16px,rgb(0 0 0 / 72%) 0px 30px 22px -10px;
-      transform:scale(1.05);
-      transform-origin: right center;
-      border-color: rgba(249,249,249,0.8);
+  &:hover {
+    box-shadow: rgb(0 0 0 / 80%) 0px 40px 58px -16px,
+      rgb(0 0 0 / 72%) 0px 30px 22px -10px;
+    transform: scale(1.05);
+    transform-origin: right center;
+    border-color: rgba(249, 249, 249, 0.8);
 
-      img{
-        transform:scale(1.1);
-      }
+    img {
+      transform: scale(1.1);
+    }
   }
 `;
 
