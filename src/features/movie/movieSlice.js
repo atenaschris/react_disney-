@@ -26,6 +26,6 @@ export const selectOriginal = (state) => state.original;
 export const selectTrending = (state) => state.trending;
 
 export const { setMovies } = movieSlice.actions;
-exp;
 
-export const movieReducer = movieSlice.reducer;
+
+export default movieSlice.reducer;
