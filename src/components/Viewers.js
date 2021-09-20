@@ -67,7 +67,6 @@ const Wrap = styled.div`
     height: 100%;
     object-fit: cover;
     opacity: 1;
-    transition: opacity 500ms ease-in-out;
     z-index: 1;
   }
 
@@ -84,6 +83,7 @@ const Wrap = styled.div`
       box-shadow: rgb(0 0 0 / 80%) 0px 40px 50px -16px, rgb(0 0 0 / 72%) 0px 30px 22px -10px;
       transform:scale(1.05);
       border-color: rgba(249,249,249,0.8);
+      
       video{
           opacity: 1;
       }

@@ -48,12 +48,11 @@ const Header = () => {
 
   useEffect(() => {
     console.log("running");
-
     onAuthStateChanged(auth, (user) => {
-      if (user && !loggedInManually)
+      if (user && !loggedInManually) {
         loggedInManually = helperSetUserFunction(user);
-
-      history.push("/home");
+        history.push("/home");
+      }
     });
   }, [userName]);
 
@@ -66,6 +65,7 @@ const Header = () => {
       })
     );
   };
+
   return (
     <Nav>
       <Logo>
