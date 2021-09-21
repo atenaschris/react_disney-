@@ -17,7 +17,7 @@ const NewDisney = () => {
       <Content>
         {disneyMovies && disneyMovies.map((movie,i)=>(
           <Wrap key={i}>
-            <Link to={'/details/' + movie.id}>
+            <Link to={'/detail/' + movie.id}>
             <img src={movie.cardImg} alt={movie.title} />
             </Link>
           </Wrap>
