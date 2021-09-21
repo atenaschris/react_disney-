@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import db from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
-import { useCallback } from "react";
 
 import { setMovies } from "../features/movie/movieSlice";
 import { selectUserName } from "../features/user/userSlice";
@@ -21,26 +20,25 @@ const Home = (props) => {
   let newDisneys = [];
   let originals = [];
   let trendings = [];
-  const fetchMoviesData = useCallback(async ()=>{
-    const querySnapshot = await getDocs(collection(db,"movies"));
-    querySnapshot.forEach((doc)=>{
-      
+  const fetchMoviesData = async () => {
+    const querySnapshot = await getDocs(collection(db, "movies"));
+    querySnapshot.forEach((doc) => {
       switch (doc.data().type) {
         case "recommend":
           console.log("Recommended movies");
-          recommends = [...recommends, {id:doc.id,...doc.data()}];
+          recommends = [...recommends, { id: doc.id, ...doc.data() }];
           break;
         case "new":
           console.log("news");
-          newDisneys = [...newDisneys,{id:doc.id,...doc.data()}];
+          newDisneys = [...newDisneys, { id: doc.id, ...doc.data() }];
           break;
         case "original":
           console.log("originals");
-         originals = [...originals,{id:doc.id,...doc.data()}];
+          originals = [...originals, { id: doc.id, ...doc.data() }];
           break;
         case "trending":
           console.log("trending");
-        trendings = [...trendings,{id:doc.id,...doc.data()}];
+          trendings = [...trendings, { id: doc.id, ...doc.data() }];
           break;
       }
 
@@ -49,28 +47,31 @@ const Home = (props) => {
       console.log(originals);
       console.log(trendings);
 
-      helperSetMoviesFunction(recommends,newDisneys,originals,trendings)
+      helperSetMoviesFunction(recommends, newDisneys, originals, trendings);
+    });
+  };
 
-    })
-  },[])
-
-  const helperSetMoviesFunction = (recommends,newDisneys,originals,trendings) =>{
-    
+  const helperSetMoviesFunction = (
+    recommends,
+    newDisneys,
+    originals,
+    trendings
+  ) => {
     dispatch(
       setMovies({
         recommend: recommends,
         newDisney: newDisneys,
         original: originals,
-        trending: trendings
-      }));
-
-  }
+        trending: trendings,
+      })
+    );
+  };
 
   useEffect(() => {
-   
-    fetchMoviesData();
-
-  }, [userName,fetchMoviesData]);
+    if (userName) {
+      fetchMoviesData();
+    }
+  }, [userName, fetchMoviesData]);
 
   return (
     <Container>

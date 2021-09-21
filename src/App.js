@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Home from "./components/Home";
 import { useSelector } from "react-redux";
 import { selectUserName } from "./features/user/userSlice";
+import DetailPage from "./components/DetailPage";
 
 function App() {
   const userName = useSelector(selectUserName);
@@ -17,7 +18,10 @@ function App() {
             <Login />
           </Route>
           <Route path="/home">
-            {!userName ? <Login /> : <Home />}
+             <Home />
+          </Route>
+          <Route path="/detail/:MovieId" >
+              <DetailPage/>
           </Route>
         </Switch>
       </Router>

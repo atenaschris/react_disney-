@@ -15,16 +15,15 @@ import {
 
 import { useHistory } from "react-router";
 
-let loggedInManually;
-
-console.log(loggedInManually);
-
 const Header = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const userName = useSelector(selectUserName);
   const userEmail = useSelector(selectUserEmail);
   const userPhoto = useSelector(selectUserPhoto);
+
+  let loggedInManually;
+
   const handleAuth = async () => {
     try {
       if (!userName) {
