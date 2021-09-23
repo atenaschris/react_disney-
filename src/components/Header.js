@@ -14,6 +14,7 @@ import {
 } from "../features/user/userSlice";
 
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const history = useHistory();
@@ -21,8 +22,6 @@ const Header = () => {
   const userName = useSelector(selectUserName);
   const userEmail = useSelector(selectUserEmail);
   const userPhoto = useSelector(selectUserPhoto);
-
-  let loggedInManually;
 
   const handleAuth = async () => {
     try {
@@ -33,7 +32,7 @@ const Header = () => {
 
         const user = response.user;
 
-        loggedInManually = helperSetUserFunction(user);
+        helperSetUserFunction(user);
       } else if (userName) {
         await auth.signOut();
 
@@ -48,8 +47,8 @@ const Header = () => {
   useEffect(() => {
     console.log("running");
     onAuthStateChanged(auth, (user) => {
-      if (user && !loggedInManually) {
-        loggedInManually = helperSetUserFunction(user);
+      if (user) {
+        helperSetUserFunction(user);
         history.push("/home");
       }
     });
@@ -75,30 +74,30 @@ const Header = () => {
       ) : (
         <>
           <NavMenu>
-            <a href="/home">
+            <Link to="/home">
               <img src="/images/home-icon.svg" alt="HOME" />
               <span>HOME</span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link to="/home">
               <img src="/images/search-icon.svg" alt="HOME" />
               <span>SEARCH</span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link to="/home">
               <img src="/images/watchlist-icon.svg" alt="HOME" />
               <span>WATCHLIST</span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link to="/home">
               <img src="/images/original-icon.svg" alt="HOME" />
               <span>ORIGINALS</span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link to="/home">
               <img src="/images/movie-icon.svg" alt="HOME" />
               <span>MOVIES</span>
-            </a>
-            <a href="/home">
+            </Link>
+            <Link to="/home">
               <img src="/images/series-icon.svg" alt="HOME" />
               <span>SERIES</span>
-            </a>
+            </Link>
           </NavMenu>
           <Signout>
             <ProfilePhoto src={userPhoto} alt={userName} />

@@ -1,6 +1,11 @@
 import "./App.css";
 import Login from "./components/Login";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import { useSelector } from "react-redux";
@@ -18,11 +23,15 @@ function App() {
             <Login />
           </Route>
           <Route path="/home">
-             <Home />
+            <Home />
           </Route>
-          <Route path="/detail/:MovieId" >
-              <DetailPage/>
-          </Route>
+          {userName ? (
+            <Route path="/detail/:MovieId">
+              <DetailPage />
+            </Route>
+          ) : (
+            <Redirect to="/"></Redirect>
+          )}
         </Switch>
       </Router>
     </div>

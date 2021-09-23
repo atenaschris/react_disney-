@@ -39,11 +39,12 @@ const DetailPage = () => {
       alert(err.message);
     }
   }, []);
+  
 
   const helperSetSingleMovieFunction = (singleMovie) => {
     dispatch(
       getSingleMovie({
-        singleMovie: singleMovie,
+        singleMovie,
       })
     );
   };

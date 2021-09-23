@@ -25,8 +25,6 @@ const movieSlice = createSlice({
       state.original= state.original;
       state.trending= state.trending;
       state.singleMovie = action.payload.singleMovie;
-
-
     }
   },
 });
